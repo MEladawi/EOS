@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="C files">
+      <UniqueIdentifier>{79b3f0b8-35b0-433f-8054-daeee318188b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private H files">
+      <UniqueIdentifier>{ff71a894-cb20-42fb-80a7-d63a837c0d24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public H files">
+      <UniqueIdentifier>{34f18731-9e68-42e7-a139-7779fbb096fb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Runtime.c">
+      <Filter>C files</Filter>
+    </ClCompile>
+    <ClCompile Include="String.c">
+      <Filter>C files</Filter>
+    </ClCompile>
+    <ClCompile Include="MemMappedIO-IA32.c">
+      <Filter>C files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Include\stdint.h">
+      <Filter>Public H files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\stdarg.h">
+      <Filter>Public H files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\null.h">
+      <Filter>Public H files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Size_t.h">
+      <Filter>Public H files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\ctype.h">
+      <Filter>Public H files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\String.h">
+      <Filter>Public H files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\MemMappedIO-IA32.h">
+      <Filter>Public H files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

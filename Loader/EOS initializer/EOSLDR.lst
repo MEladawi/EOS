@@ -1,0 +1,913 @@
+Microsoft (R) Macro Assembler Version 6.14.8444		    07/08/11 22:22:35
+D:\GRAD\EOS - (KB)\Loader\EOS initializer\EOSLDR.asm	     Page 1 - 1
+
+
+				;							          _____                   _______                   _____          
+				;							         /\    \                 /::\    \                 /\    \         
+				;							        /::\    \               /::::\    \               /::\    \        
+				;							       /::::\    \             /::::::\    \             /::::\    \       
+				;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+				;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+				;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+				;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+				;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+				;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+				;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+				;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+				;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+				;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+				;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+				;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+				;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+				;							      \:::\    \                \::::/    /             \::::::/    /      
+				;							       \:::\____\                \::/____/               \::::/    /       
+				;							        \::/    /                 ~~                      \::/    /        
+				;							         \/____/  '11 Grad project                         \/____/         
+				;							                                                                           
+
+
+
+				.model tiny
+				.686P
+ 0000				.code
+				org 0h
+
+
+
+				;Definitions::::::::::::::::::::::::::::::::::::::::::::::::
+ = 0064				KernelSize			= 100;sectors :D
+ = 1000				RMode_KernelBase	= 1000h ; This is th segment content ! we will load kernel at 10000 = at 64 KiB so max kernel size HERE is 575 KiB, 
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+				;Jumb over inluded code!;;;;;;;;;;;;;;;;;;;;;;;;;
+ 0000				GO:
+ 0000  0F 8A 02A4			jp main
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+				;Data;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ 0004 4C 6F 61 64 69 6E		LdMsg             Byte     "Loading EOS operating system initializer", 0
+       67 20 45 4F 53 20
+       6F 70 65 72 61 74
+       69 6E 67 20 73 79
+       73 74 65 6D 20 69
+       6E 69 74 69 61 6C
+       69 7A 65 72 00
+ 002D 20 5B 44 6F 6E 65		DoneMsg         Byte     " [Done]",0Dh, 0Ah, 0
+       5D 0D 0A 00
+ 0037 0D 0A 00			NewLineMsg    Byte      0Dh, 0Ah, 0 
+ 003A 6F 6F 70 73 21 20		FailMsg           Byte      "oops! fatal error occured in loading operating system initializer",0Dh, 0Ah, 0
+       66 61 74 61 6C 20
+       65 72 72 6F 72 20
+       6F 63 63 75 72 65
+       64 20 69 6E 20 6C
+       6F 61 64 69 6E 67
+       20 6F 70 65 72 61
+       74 69 6E 67 20 73
+       79 73 74 65 6D 20
+       69 6E 69 74 69 61
+       6C 69 7A 65 72 0D
+       0A 00
+ 007E 70 72 65 73 73 20		RebootMsg     Byte       "press any key to reboot", 0Dh, 0Ah, 0 
+       61 6E 79 20 6B 65
+       79 20 74 6F 20 72
+       65 62 6F 6F 74 0D
+       0A 00
+ 0098 2E 2E 2E 00		WaitMsg          Byte      "...",0
+ 009C 4C 6F 61 64 69 6E		LdMsg2	   Byte      "Loading EOS operating system kernel loader", 0
+       67 20 45 4F 53 20
+       6F 70 65 72 61 74
+       69 6E 67 20 73 79
+       73 74 65 6D 20 6B
+       65 72 6E 65 6C 20
+       6C 6F 61 64 65 72
+       00
+ 00C7 49 6E 69 74 69 61		InitialMsg	   Byte	      "Initializing system environment.......................................",0Dh, 0Ah, 0
+       6C 69 7A 69 6E 67
+       20 73 79 73 74 65
+       6D 20 65 6E 76 69
+       72 6F 6E 6D 65 6E
+       74 2E 2E 2E 2E 2E
+       2E 2E 2E 2E 2E 2E
+       2E 2E 2E 2E 2E 2E
+       2E 2E 2E 2E 2E 2E
+       2E 2E 2E 2E 2E 2E
+       2E 2E 2E 2E 2E 2E
+       2E 2E 2E 2E 0D 0A
+       00
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+				;Include;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+				include ..\LIB\GDT.inc
+			      C ;							          _____                   _______                   _____          
+			      C ;							         /\    \                 /::\    \                 /\    \         
+			      C ;							        /::\    \               /::::\    \               /::\    \        
+			      C ;							       /::::\    \             /::::::\    \             /::::\    \       
+			      C ;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+			      C ;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+			      C ;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+			      C ;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+			      C ;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+			      C ;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+			      C ;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+			      C ;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+			      C ;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+			      C ;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+			      C ;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+			      C ;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+			      C ;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+			      C ;							      \:::\    \                \::::/    /             \::::::/    /      
+			      C ;							       \:::\____\                \::/____/               \::::/    /       
+			      C ;							        \::/    /                 ~~                      \::/    /        
+			      C ;							         \/____/  '11 Grad project                         \/____/         
+			      C ;							                                                                           
+			      C 
+			      C 
+			      C 
+			      C 
+			      C 
+			      C 
+			      C 
+			      C ;GDT Data structure*******************************************************************************************************
+ 0110			      C NullGD	QWord	0h
+       0000000000000000
+			      C 
+ 0118			      C CodeGD	QWord	0000000011001111100110100000000000000000000000001111111111111111b
+       00CF9A000000FFFF
+			      C 
+ 0120			      C DataGD	QWord	0000000011001111100100100000000000000000000000001111111111111111b
+       00CF92000000FFFF
+			      C 
+			      C 
+			      C 
+			      C ;GDTR Data********************************************************************************************************************
+ 0128 0017		      C GDT_Info	Word		(offset GDT_Info) - (offset NullGD) -1
+ 012A  7F10 0000 R	      C 		DWord	(offset NullGD) + 7E00h 	;to get absolute address :D
+			      C 
+			      C ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+			      C 
+			      C 
+			      C 
+			      C 
+ 012E			      C SetGDT PROC
+			      C 
+			      C 	;mov BX, (offset GDT_Info) 
+ 012E  0F 01 16 0128 R	      C 	lgdt FWord PTR GDT_Info
+			      C 	
+ 0133  C3		      C 	RET
+ 0134			      C SetGDT ENDP
+			      C 
+				include ..\LIB\A20.inc
+			      C ;							          _____                   _______                   _____          
+			      C ;							         /\    \                 /::\    \                 /\    \         
+			      C ;							        /::\    \               /::::\    \               /::\    \        
+			      C ;							       /::::\    \             /::::::\    \             /::::\    \       
+			      C ;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+			      C ;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+			      C ;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+			      C ;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+			      C ;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+			      C ;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+			      C ;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+			      C ;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+			      C ;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+			      C ;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+			      C ;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+			      C ;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+			      C ;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+			      C ;							      \:::\    \                \::::/    /             \::::::/    /      
+			      C ;							       \:::\____\                \::/____/               \::::/    /       
+			      C ;							        \::/    /                 ~~                      \::/    /        
+			      C ;							         \/____/  '11 Grad project                         \/____/         
+			      C ;							                                                                           
+			      C 
+			      C 
+			      C 
+			      C 
+			      C 
+			      C 
+			      C 
+			      C 
+			      C ;The 8042 controller contains the following registers:
+			      C ;
+			      C ;A one-byte input buffer - contains byte read from keyboard; read-only
+			      C ;A one-byte output buffer - contains byte to-be-written to keyboard; write-only
+			      C ;A one-byte status register - 8 status flags; read-only
+			      C ;A one-byte control register - 7 control flags; read/write 
+			      C 
+			      C 
+			      C 
+			      C ;8043 Keyboard Controller Status Register is at 64h port address
+			      C ;Bit 0:
+			      C 	;Output Buffer Full-A 0 indicates that the keyboard
+			      C 	;controller's output buffer has no data. A 1 indicates that
+			      C 	;the controller has placed data into its output buffer but
+			      C 	;the system has not yet read the data. When the system
+			      C 	;reads the output buffer (1/0 address hex 60), this bit will
+			      C 	;return to a 0. (With instruction IN)
+			      C ;Bit 1:
+			      C 	;Input Buffer Full-A 0 indicates that the keyboard
+			      C 	;controller's input buffer (1/0 address hex 60 or 64) is
+			      C 	;empty. A 1 indicates that data has been written into the
+			      C 	;buffer but the controller has not read the data. When the
+			      C 	;controller reads the input buffer, this bit will return to 0.(With instruction OUT)
+			      C 
+ 0134			      C WaitKB_IP PROC USES Ax
+			      C 
+ 0135			      C Begin_WaitKB_IP:
+ 0135  E4 64		      C 	in al, 64h
+ 0137  A8 02		      C 	Test al, 2h
+ 0139  75 FA		      C jnz Begin_WaitKB_IP
+			      C 
+			      C 	RET
+ 013D			      C WaitKB_IP ENDP
+			      C 
+ 013D			      C WaitKB_OP PROC USES Ax
+ 013E			      C Begin_WaitKB_OP:
+ 013E  E4 64		      C 	in al, 64h
+ 0140  A8 01		      C 	Test al, 1h
+ 0142  74 FA		      C jz Begin_WaitKB_OP
+			      C 	RET
+ 0146			      C WaitKB_OP ENDP
+			      C 
+			      C 
+			      C 
+			      C ;**Controller command used in next proc::
+			      C ;D0h:
+			      C 	;Read Output Port-This command causes the controller
+			      C 	;to read its output port and place the data in its output
+			      C 	;buffer. This command should be issued only if the output
+			      C 	;buffer is empty.
+			      C ;D1h:
+			      C 	;Write Output Port-The next byte of data written to I/0
+			      C 	;address hex 60 is placed in the controller's output port.
+			      C 
+			      C ;ADh:
+			      C 	;Disable Keyboard Feature-This command sets bit 4 of
+			      C 	;the controller's command byte. This disables the
+			      C 	;keyboard interface by driving the clock line low. Data
+			      C 	;will not be sent or received.
+			      C 
+			      C ;AEh:
+			      C 	;Enable Keyboard Interface-This command clears bit 4
+			      C 	;of the command byte, which releases the keyboard
+			      C 	;interface.
+ 0146			      C EnableA20 PROC
+ 0146  60		      C pusha
+			      C 	;Diable keyboard
+ 0147  E8 FFEA		      C 	call WaitKB_IP ;wait I/P buffer
+ 014A  B0 AD		      C 	mov al, 0ADh
+ 014C  E6 64		      C 	OUT 64h, al
+			      C 
+			      C 
+ 014E			      C Start_EnableA20:
+			      C 	;This cause the o/p port to be written to output bufer, then wait it to finish
+ 014E  E8 FFE3		      C 	call WaitKB_IP
+ 0151  B0 D0		      C 	mov al, 0D0h
+ 0153  E6 64		      C 	out 64h, al
+			      C 	
+			      C 	
+			      C 	;Read the o/p port data that exists in o/p buffer 
+ 0155  E8 FFE5		      C 	call WaitKB_op
+ 0158  E4 60		      C 	IN al, 60h
+ 015A  8A D8		      C 	mov bl, al
+			      C 	
+			      C 	
+			      C 	;Send Data we want to put in o/p port later to I/P buffer
+ 015C  E8 FFD5		      C 	call WaitKB_IP
+ 015F  B0 D1		      C 	mov al, 0D1h
+ 0161  E6 64		      C 	OUT 64h, al
+			      C 	
+			      C 	
+			      C 	;Set second bit ; of A20
+ 0163  E8 FFCE		      C 	call WaitKB_IP
+ 0166  8A C3		      C 	mov al, bl
+ 0168  0C 02		      C 	OR al, 2h
+ 016A  E6 60		      C 	OUT 60h, al
+			      C 	
+			      C 
+			      C 	;make sure that A20 bit is set
+ 016C  E8 FFC5		      C 	call WaitKB_IP
+ 016F  B0 D0		      C 	mov al, 0D0h
+ 0171  E6 64		      C 	out 64h, al
+ 0173  E8 FFC7		      C 	call WaitKB_OP
+ 0176  E4 60		      C 	IN al, 60h
+ 0178  A8 02		      C 	Test al, 2
+ 017A  74 D2		      C JZ Start_EnableA20
+			      C 
+			      C 	;Enable keyboard
+ 017C  E8 FFB5		      C 	call WaitKB_IP
+ 017F  B0 AE		      C 	mov al, 0AEh
+ 0181  E6 64		      C 	OUT 64h, al
+ 0183  E8 FFAE		      C 	call WaitKB_IP
+			      C 	
+ 0186  61		      C popa
+ 0187  C3		      C 	RET
+ 0188			      C EnableA20 ENDP
+			      C 
+			      C 
+				include ..\LIB\Print16.inc
+			      C ;							          _____                   _______                   _____          
+			      C ;							         /\    \                 /::\    \                 /\    \         
+			      C ;							        /::\    \               /::::\    \               /::\    \        
+			      C ;							       /::::\    \             /::::::\    \             /::::\    \       
+			      C ;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+			      C ;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+			      C ;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+			      C ;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+			      C ;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+			      C ;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+			      C ;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+			      C ;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+			      C ;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+			      C ;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+			      C ;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+			      C ;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+			      C ;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+			      C ;							      \:::\    \                \::::/    /             \::::::/    /      
+			      C ;							       \:::\____\                \::/____/               \::::/    /       
+			      C ;							        \::/    /                 ~~                      \::/    /        
+			      C ;							         \/____/  '11 Grad project                         \/____/         
+			      C ;							                                                                           
+			      C 
+			      C 
+			      C 
+			      C 
+ 0188			      C print PROC 
+ 0188  60		      C pusha
+ 0189			      C start:
+ 0189  AC		      C 	lodsb
+ 018A  0A C0		      C 	or al,al
+ 018C  74 06		      C 	jz done
+ 018E  B4 0E		      C 	mov ah, 0eh
+ 0190  CD 10		      C 	int 10h
+ 0192  EB F5		      C jmp start
+			      C 
+ 0194			      C done: 
+ 0194  61		      C popa
+ 0195  C3		      C ret
+ 0196			      C print ENDP
+			      C 
+			      C 
+				include ..\LIB\Load16.inc
+			      C ;							          _____                   _______                   _____          
+			      C ;							         /\    \                 /::\    \                 /\    \         
+			      C ;							        /::\    \               /::::\    \               /::\    \        
+			      C ;							       /::::\    \             /::::::\    \             /::::\    \       
+			      C ;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+			      C ;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+			      C ;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+			      C ;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+			      C ;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+			      C ;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+			      C ;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+			      C ;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+			      C ;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+			      C ;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+			      C ;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+			      C ;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+			      C ;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+			      C ;							      \:::\    \                \::::/    /             \::::::/    /      
+			      C ;							       \:::\____\                \::/____/               \::::/    /       
+			      C ;							        \::/    /                 ~~                      \::/    /        
+			      C ;							         \/____/  '11 Grad project                         \/____/         
+			      C ;							                                                                           
+			      C 
+			      C ;Variables
+ 0196 00		      C Sector    Byte     ?
+ 0197 00		      C Head      Byte     ?
+ 0198 00		      C Cylinder  Byte     ?
+			      C 
+			      C 
+			      C 
+			      C 
+ 0199			      C InitializeDrive PROC 
+ 0199  60		      C pusha
+ 019A			      C Begin:
+ 019A  33 DB		      C 	xor bx, bx
+ 019C  32 D2		      C 	xor dl, dl
+ 019E  32 E4		      C 	xor ah, ah
+ 01A0  CD 13		      C 	int 13h
+ 01A2  72 F6		      C jc Begin
+ 01A4  61		      C popa
+ 01A5  C3		      C 	RET
+ 01A6			      C InitializeDrive ENDP
+			      C 
+			      C 
+			      C 
+ 01A6			      C CnvrtAd PROC
+ 01A6  60		      C pusha
+			      C 
+			      C ;This covert LBA address to CHS address.
+			      C ;Input: LBA value given in AX register.
+			      C ;o/p are : cylinder, head and Sector variables : in main module.	   
+			      C 	
+			      C 
+			      C 	;Symbolic constants !
+ = 0012			      C 	SectorPerTrack = 18
+ = 0002			      C 	NoHeads = 2
+ = 0200			      C 	BytesPerSector = 512
+			      C 	
+			      C 	;Sector = (LBA mod SectorsPerTrack)+1
+			      C 	;Cylinder = (LBA/SectorsPerTrack)/NumHeads
+			      C 	;Head = (LBA/SectorsPerTrack) mod NumHeads
+			      C 	
+			      C 	
+			      C 	;**LBA/Sectors Per Track:
+			      C 	;Quotient(Ax) : NumberOfTrack    Remainder(Dx) + 1 : Sector
+ 01A7  33 D2		      C 	xor dx, dx
+ 01A9  33 DB		      C 	xor bx,bx
+ 01AB  BB 0012		      C 	mov Bx, SectorPerTrack
+ 01AE  F7 F3		      C 	Div Bx
+ 01B0  FE C2		      C 	inc dl
+ 01B2  88 16 0196 R	      C 	mov Sector, dl
+			      C 	
+			      C 	
+			      C 	;**Number Of Tracks(Ax)/Number Of Heads:
+			      C 	;Quotient(Al) : Cylinder  ,   Remainder(Ah) : Head
+ 01B6  33 D2		      C 	XOR Dx, Dx
+ 01B8  BB 0002		      C 	mov Bx, NoHeads
+ 01BB  F7 F3		      C 	Div Bx
+ 01BD  A2 0198 R	      C 	mov Cylinder, al
+ 01C0  88 16 0197 R	      C 	mov Head, dl
+			      C 	
+			      C 	
+ 01C4  61		      C popa
+ 01C5  C3		      C 	RET
+ 01C6			      C CnvrtAd ENDP
+			      C 
+			      C 
+			      C 
+ 01C6			      C Load PROC
+			      C 
+			      C ;receives Ax as start sector, Cx as no of sectors and Bx as address of loaded data
+			      C 
+ 01C6  E8 FFD0		      C 	CALL InitializeDrive
+			      C 
+ 01C9			      C LoadBegin:
+			      C 	
+ 01C9  BF 000A		      C 	mov di, 0Ah  ;Dx is loop to try to load a sector 10 times.
+			      C 	
+			      C 	; for wait dots :D
+ 01CC  BE 0098 R	      C 	mov si, offset WaitMsg
+ 01CF  E8 FFB6		      C 	call print
+			      C 		
+ 01D2			      C 	SectorTrial:
+ 01D2  50		      C 		push ax
+ 01D3  52		      C 		push dx
+ 01D4  51		      C 		push cx
+			      C 				
+			      C 		;Convert address
+ 01D5  E8 FFCE		      C 		call CnvrtAd
+			      C 
+			      C 		; Interrupt 13h to read sector
+ 01D8  B4 02		      C 		mov ah, 2
+ 01DA  B0 01		      C 		mov al, 1
+ 01DC  8A 2E 0198 R	      C 		mov ch, cylinder
+ 01E0  8A 0E 0196 R	      C 		mov cl, sector
+ 01E4  8A 36 0197 R	      C 		mov dh, head
+ 01E8  B2 00		      C 		mov dl, 0
+ 01EA  CD 13		      C 		int 13h
+			      C 		
+ 01EC  73 08		      C 		jnc  NextSec ;if carry there is error so we retry, else load next sector
+			      C 		
+ 01EE  4F		      C 		dec Di  ;Decrement loop of error trials
+ 01EF  74 18		      C 		jz failure ;Di=0
+			      C 		
+ 01F1  59		      C 		pop cx 
+ 01F2  5A		      C 		pop dx
+ 01F3  58		      C 		pop ax
+			      C 			
+ 01F4  EB DC		      C 	jmp SectorTrial
+			      C 	
+ 01F6			      C NextSec:
+ 01F6  59		      C 	pop cx
+ 01F7  5A		      C 	pop dx
+ 01F8  58		      C 	pop ax
+ 01F9  81 C3 0200	      C 	add bx, BytesPerSector   ;next memory location for next sector
+ 01FD  40		      C 	inc Ax	   ;Next sector LBA
+ 01FE  49		      C 	dec Cx ;Decrease counter of no of sectors
+ 01FF  75 C8		      C jnz LoadBegin
+			      C 
+			      C 
+			      C 
+ 0201  BE 002D R	      C 	mov si, offset DoneMsg
+ 0204  E8 FF81		      C 	call print
+			      C 	
+ 0207  EB 12		      C 	jmp finish
+			      C 	
+			      C 
+			      C 	
+ 0209			      C Failure:
+ 0209  BE 003A R	      C           mov si, offset FailMsg
+ 020C  E8 FF79		      C           call    Print
+ 020F  BE 007E R	      C           mov si, offset RebootMsg
+ 0212  E8 FF73		      C           call print
+			      C           
+			      C           ;Reboot   :(   after user press key
+ 0215  B4 00		      C           mov ah, 0
+ 0217  CD 16		      C           int  16h    ; wait key press
+ 0219  CD 19		      C           int  19h    ; Reboot computer	
+			      C 	
+			      C 
+ 021B			      C finish:
+ 021B  C3		      C 	RET
+			      C 	
+ 021C			      C Load ENDP
+			      C 
+			      C 
+			      C 
+			      C 
+				include ..\LIB\MemSize.inc
+			      C ;							          _____                   _______                   _____          
+			      C ;							         /\    \                 /::\    \                 /\    \         
+			      C ;							        /::\    \               /::::\    \               /::\    \        
+			      C ;							       /::::\    \             /::::::\    \             /::::\    \       
+			      C ;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+			      C ;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+			      C ;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+			      C ;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+			      C ;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+			      C ;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+			      C ;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+			      C ;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+			      C ;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+			      C ;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+			      C ;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+			      C ;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+			      C ;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+			      C ;							      \:::\    \                \::::/    /             \::::::/    /      
+			      C ;							       \:::\____\                \::/____/               \::::/    /       
+			      C ;							        \::/    /                 ~~                      \::/    /        
+			      C ;							         \/____/  '11 Grad project                         \/____/         
+			      C ;							                                                                           
+			      C 
+			      C 
+			      C 
+			      C 
+			      C 
+ 021C			      C GetMemorySize PROC
+			      C ;	Get memory size.
+			      C ;	ret: ax -> in KiB size between 1MB and 16MB.	//Usually not used as we have RAM aboe 16 MB !!
+			      C ;	ret: bx -> number of 64KiB blocks above 16MB.
+			      C 
+ 021C			      C Start:
+ 021C  66| 51		      C 	push	ecx
+ 021E  66| 52		      C 	push	edx
+			      C 	
+ 0220  66| 33 C9	      C 	xor	ecx, ecx		
+ 0223  66| 33 D2	      C 	xor	edx, edx
+			      C 	
+ 0226  B8 E801		      C 	mov	ax, 0E801h
+ 0229  CD 15		      C 	int	15h	
+ 022B  72 15		      C 	jc	Error
+			      C 	
+ 022D  80 FC 86		      C 	cmp	ah, 86h	
+ 0230  74 10		      C 	je	Error
+			      C 	
+ 0232  80 FC 80		      C 	cmp	ah, 80h		
+ 0235  74 0B		      C 	je	Error
+			      C 	
+ 0237  E3 04		      C 	jcxz	Normal
+			      C 	
+ 0239  8B C1		      C 	mov	ax, cx			
+ 023B  8B DA		      C 	mov	bx, dx
+			      C  	
+ 023D			      C Normal:
+			      C 	
+ 023D  66| 5A		      C 	pop	edx			
+ 023F  66| 59		      C 	pop	ecx
+ 0241  C3		      C 	RET
+			      C  
+ 0242			      C Error:
+ 0242  EB D8		      C 	jmp	Start
+			      C 	
+ 0244			      C GetMemorySize ENDP
+			      C 
+			      C 	
+			      C 
+				include ..\LIB\MemMap.inc
+			      C ;							          _____                   _______                   _____          
+			      C ;							         /\    \                 /::\    \                 /\    \         
+			      C ;							        /::\    \               /::::\    \               /::\    \        
+			      C ;							       /::::\    \             /::::::\    \             /::::\    \       
+			      C ;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+			      C ;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+			      C ;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+			      C ;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+			      C ;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+			      C ;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+			      C ;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+			      C ;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+			      C ;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+			      C ;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+			      C ;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+			      C ;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+			      C ;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+			      C ;							      \:::\    \                \::::/    /             \::::::/    /      
+			      C ;							       \:::\____\                \::/____/               \::::/    /       
+			      C ;							        \::/    /                 ~~                      \::/    /        
+			      C ;							         \/____/  '11 Grad project                         \/____/         
+			      C ;							                                                                           
+			      C 
+			      C 
+			      C 
+			      C 
+			      C 
+			      C  
+ 0244			      C GetMemoryMap PROC
+			      C ;	Get memory map by interrupts. This info will be passed to KERNEL as we need it for memory management.
+			      C ;	Input:  es:di -> destination buffer for entries, usually es=0 ;-)
+			      C ;	OUT:   bp    -> entries count
+			      C 
+ 0244  66| 60		      C 	pushad
+ 0246  66| 33 DB	      C 	xor	ebx, ebx
+ 0249  33 ED		      C 	xor	bp, bp						; number of entries stored here
+ 024B  66| BA 50414D53	      C 	mov	edx, 'PAMS'						; 'SMAP'
+ 0251  66| B8 0000E820	      C 	mov	eax, 0E820h
+ 0257  66| B9 00000018	      C 	mov	ecx, 24						; memory map entry struct is 24 bytes
+ 025D  CD 15		      C 	int	15h							; get first entry
+ 025F  72 43		      C 	jc	Error	
+ 0261  66| 3D 50414D53	      C 	cmp	eax, 'PAMS'						; bios returns SMAP in eax
+ 0267  75 3B		      C 	jne	Error
+ 0269  66| 85 DB	      C 	test	ebx, ebx						; if ebx=0 then list is one entry long; bail out
+ 026C  74 36		      C 	je	Error
+ 026E  EB 14		      C 	jmp	Start
+			      C 
+ 0270			      C NextEntry:
+ 0270  66| BA 50414D53	      C 	mov	edx, 'PAMS'						; some bios's trash this register
+ 0276  66| B9 00000018	      C 	mov	ecx, 24						; entry is 24 bytes
+ 027C  66| B8 0000E820	      C 	mov	eax, 0E820h
+ 0282  CD 15		      C 	int	15h							; get next entry
+			      C 
+ 0284			      C Start:
+ 0284  E3 16		      C 	jcxz	SkipEntry						; if actual returned bytes is 0, skip entry
+			      C 
+ 0286			      C NoNext:
+ 0286  66| 26: 8B 4D 08	      C 	mov	ecx, ES: [Di + 8]					; get length (low dword)
+ 028B  66| 85 C9	      C 	test	ecx, ecx						; if length is 0 skip it
+ 028E  75 08		      C 	jne	short CorrectEntry
+ 0290  66| 26: 8B 4D 0C	      C 	mov	ecx, ES: [Di + 12]					; get length (upper dword)
+ 0295  67& E3 04	      C 	jecxz	SkipEntry						; if length is 0 skip it
+			      C 
+ 0298			      C CorrectEntry:
+ 0298  45		      C 	inc	bp							; increment entry count
+ 0299  83 C7 18		      C 	add	di, 24							; point di to next entry in buffer
+			      C 
+ 029C			      C SkipEntry:
+ 029C  66| 83 FB 00	      C 	cmp	ebx, 0							; if ebx return is 0, list is done
+ 02A0  75 CE		      C 	jne	NextEntry						; get next entry
+ 02A2  EB 01		      C 	jmp	done
+			      C 
+ 02A4			      C Error:
+ 02A4  F9		      C 	stc
+			      C 
+ 02A5			      C Done:
+ 02A5  66| 61		      C 	popad
+ 02A7  C3		      C 	RET
+			      C 	
+ 02A8			      C GetMemoryMap ENDP
+			      C 
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+				;Structure of data passed to kernel;;;;;;;;;;;;;;;;;;
+ 0008				BootData struct
+ 0000  0000				MemMapEntriesBase 	Word 		?
+ 0002  0000				MemMapEntriesCount	Word		?
+ 0004  0000				MemorySizeBel16MB	Word		?
+ 0006  0000				MemorySizeAb16MB	Word		?
+				BootData ENDS
+				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+ 02A8				main PROC
+ 02A8  FB				sti
+					
+ 02A9  B8 07E0				mov ax, 7e0h
+ 02AC  8E D8				mov ds, ax
+					
+ 02AE  B8 1000				mov ax, RMode_KernelBase
+ 02B1  8E C0				mov ES, ax				;Now ES hols the segment address for our kernel !
+					
+					
+				;*****************************************************************Begin Pmode establishment***********************************************************************
+
+				;Load kernel temporarily to 10000h:
+ 02B3  FC				cld
+ 02B4  BE 009C R			mov si, offset LdMsg2
+ 02B7  E8 FECE				call print
+ 02BA  B9 0064				mov cx, KernelSize
+ 02BD  B8 0005				mov Ax, 5h
+ 02C0  33 DB				xor Bx, Bx
+ 02C2  E8 FF01				call Load
+ 02C5  BE 00C7 R			mov si, offset InitialMsg
+ 02C8  E8 FEBD				call print
+					
+
+				;1-establish GDT:--------------------------------------
+ 02CB  FA				cli
+ 02CC  E8 FE5F				call SetGDT
+				;--------------------------------------------------------------
+
+
+
+				;2-Enable A20:-------------------------------------------------
+ 02CF  E8 FE74				call EnableA20
+				;-------------------------------------------------------------------
+
+				;Get memory Size and map: (Used in kernel) ------
+ 02D2  FB				sti
+ 02D3 0000 0000 0000 0000		KernelData BootData <>
+					
+ 02DB  E8 FF3E				call GetMemorySize
+ 02DE  A3 02D7 R			mov KernelData.MemorySizeBel16MB, ax
+ 02E1  89 1E 02D9 R			mov KernelData.MemorySizeAb16MB, bx
+					
+ 02E5  33 C0				xor ax, ax
+ 02E7  8E C0				mov es, ax
+ 02E9  BF 0500				mov di, 500h
+ 02EC  E8 FF55				call GetMemoryMap
+ 02EF  89 2E 02D5 R			mov KernelData.MemMapEntriesCount, bp
+ 02F3  89 3E 02D3 R			mov KernelData.MemMapEntriesBase, di
+					
+					;This is the address of data we pass to kernel :D
+					;In kernel we will creat pointer with value of EBX to access structure members ;-)
+ 02F7  66| BB 000080D3 R		mov EBX, ((offset KernelData) + 7E00h)
+					
+ 02FD  FA				cli
+				;-------------------------------------------------------------------
+
+				;3-Change CR0 (PE) bit to 1:--------------------------
+ 02FE  66| BD 00010400			mov 	EBP, (10400h)
+ 0304  0F 01 E2				smsw	dx
+ 0307  83 CA 01				OR	dx, 1h
+ 030A  0F 01 F2				lmsw	dx
+				;-------------------------------------------------------------------
+
+
+
+				;Make far jump manually ; ) -----------------------------
+ 030D  6A 08				push 8h  				;Cs: selector
+ 030F  68 8113 R			push ((offset done) + 7E00h)	;we add 7e00h to get absolute address ;-)
+ 0312  CB				retf
+				;-----------------------------------------------------------------------
+
+
+
+
+ 0313				DONE:
+				;*********************************************************32-bit part :D :D :D*****************************************************
+
+				;mov ax, 10h
+				;mov ds,ax
+				;mov ds,ax
+				;
+				;;NOTE:: the next part is written in code machine, as the assembler has TINY model which is 16 bit so, it will assemble it incorrectly ;-)
+				;
+				;
+				;;mov EAX, [10000h + 3Ch]
+				;Byte		0B8h
+				;DWord	0001003Ch
+				;
+				;;mov EAX, [EAX]
+				;Byte		8Bh
+				;Byte		00h
+				;
+				;;add EAX, 40(28h)
+				;Byte		83h
+				;Byte		0C0h
+				;Byte		28h 
+				;
+				;;mov EBX, [EAX]
+				;Byte		8Bh
+				;Byte		18h
+				;
+				;;add EAX, 12
+				;Byte		83h
+				;Byte		0C0h
+				;Byte		0Ch
+				;
+				;;mov EBP, [EAX]
+				;Byte		8Bh
+				;Byte		28h
+				;
+				;;add EBP, EBX
+				;Byte		03h
+				;Byte		0EBh
+
+				;CallEBP
+ 0313  D5FF			Word	0D5FFh
+ 0315  F4				hlt
+					
+ 0316				main ENDP
+
+				End
+Microsoft (R) Macro Assembler Version 6.14.8444		    07/08/11 22:22:35
+D:\GRAD\EOS - (KB)\Loader\EOS initializer\EOSLDR.asm	     Symbols 2 - 1
+
+
+
+
+Structures and Unions:
+
+                N a m e                  Size
+                                         Offset      Type
+
+BootData . . . . . . . . . . . .	 0008
+  MemMapEntriesBase  . . . . . .	 0000	     Word
+  MemMapEntriesCount . . . . . .	 0002	     Word
+  MemorySizeBel16MB  . . . . . .	 0004	     Word
+  MemorySizeAb16MB . . . . . . .	 0006	     Word
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0316	  Word	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+CnvrtAd  . . . . . . . . . . . .	P Near	 01A6	  _TEXT	Length= 0020 Public
+EnableA20  . . . . . . . . . . .	P Near	 0146	  _TEXT	Length= 0042 Public
+  Start_EnableA20  . . . . . . .	L Near	 014E	  _TEXT	
+GetMemoryMap . . . . . . . . . .	P Near	 0244	  _TEXT	Length= 0064 Public
+  NextEntry  . . . . . . . . . .	L Near	 0270	  _TEXT	
+  Start  . . . . . . . . . . . .	L Near	 0284	  _TEXT	
+  NoNext . . . . . . . . . . . .	L Near	 0286	  _TEXT	
+  CorrectEntry . . . . . . . . .	L Near	 0298	  _TEXT	
+  SkipEntry  . . . . . . . . . .	L Near	 029C	  _TEXT	
+  Error  . . . . . . . . . . . .	L Near	 02A4	  _TEXT	
+  Done . . . . . . . . . . . . .	L Near	 02A5	  _TEXT	
+GetMemorySize  . . . . . . . . .	P Near	 021C	  _TEXT	Length= 0028 Public
+  Start  . . . . . . . . . . . .	L Near	 021C	  _TEXT	
+  Normal . . . . . . . . . . . .	L Near	 023D	  _TEXT	
+  Error  . . . . . . . . . . . .	L Near	 0242	  _TEXT	
+InitializeDrive  . . . . . . . .	P Near	 0199	  _TEXT	Length= 000D Public
+  Begin  . . . . . . . . . . . .	L Near	 019A	  _TEXT	
+Load . . . . . . . . . . . . . .	P Near	 01C6	  _TEXT	Length= 0056 Public
+  LoadBegin  . . . . . . . . . .	L Near	 01C9	  _TEXT	
+  SectorTrial  . . . . . . . . .	L Near	 01D2	  _TEXT	
+  NextSec  . . . . . . . . . . .	L Near	 01F6	  _TEXT	
+  Failure  . . . . . . . . . . .	L Near	 0209	  _TEXT	
+  finish . . . . . . . . . . . .	L Near	 021B	  _TEXT	
+SetGDT . . . . . . . . . . . . .	P Near	 012E	  _TEXT	Length= 0006 Public
+WaitKB_IP  . . . . . . . . . . .	P Near	 0134	  _TEXT	Length= 0009 Public
+  Begin_WaitKB_IP  . . . . . . .	L Near	 0135	  _TEXT	
+WaitKB_OP  . . . . . . . . . . .	P Near	 013D	  _TEXT	Length= 0009 Public
+  Begin_WaitKB_OP  . . . . . . .	L Near	 013E	  _TEXT	
+main . . . . . . . . . . . . . .	P Near	 02A8	  _TEXT	Length= 006E Public
+  DONE . . . . . . . . . . . . .	L Near	 0313	  _TEXT	
+print  . . . . . . . . . . . . .	P Near	 0188	  _TEXT	Length= 000E Public
+  start  . . . . . . . . . . . .	L Near	 0189	  _TEXT	
+  done . . . . . . . . . . . . .	L Near	 0194	  _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0001h	 
+@code  . . . . . . . . . . . . .	Text   	 DGROUP
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+BytesPerSector . . . . . . . . .	Number	 0200h	 
+CodeGD . . . . . . . . . . . . .	QWord	 0118	  _TEXT	
+Cylinder . . . . . . . . . . . .	Byte	 0198	  _TEXT	
+DataGD . . . . . . . . . . . . .	QWord	 0120	  _TEXT	
+DoneMsg  . . . . . . . . . . . .	Byte	 002D	  _TEXT	
+FailMsg  . . . . . . . . . . . .	Byte	 003A	  _TEXT	
+GDT_Info . . . . . . . . . . . .	Word	 0128	  _TEXT	
+GO . . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+Head . . . . . . . . . . . . . .	Byte	 0197	  _TEXT	
+InitialMsg . . . . . . . . . . .	Byte	 00C7	  _TEXT	
+KernelData . . . . . . . . . . .	BootData  02D3	   _TEXT	
+KernelSize . . . . . . . . . . .	Number	 0064h	 
+LdMsg2 . . . . . . . . . . . . .	Byte	 009C	  _TEXT	
+LdMsg  . . . . . . . . . . . . .	Byte	 0004	  _TEXT	
+NewLineMsg . . . . . . . . . . .	Byte	 0037	  _TEXT	
+NoHeads  . . . . . . . . . . . .	Number	 0002h	 
+NullGD . . . . . . . . . . . . .	QWord	 0110	  _TEXT	
+RMode_KernelBase . . . . . . . .	Number	 1000h	 
+RebootMsg  . . . . . . . . . . .	Byte	 007E	  _TEXT	
+SectorPerTrack . . . . . . . . .	Number	 0012h	 
+Sector . . . . . . . . . . . . .	Byte	 0196	  _TEXT	
+WaitMsg  . . . . . . . . . . . .	Byte	 0098	  _TEXT	
+
+	   0 Warnings
+	   0 Errors

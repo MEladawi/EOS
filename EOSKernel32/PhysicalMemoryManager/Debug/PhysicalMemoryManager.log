@@ -1,0 +1,20 @@
+﻿Build started 7/18/2011 10:10:42 AM.
+     1>Project "D:\GRAD\EOS - (KB)\EOSKernel32\PhysicalMemoryManager\PhysicalMemoryManager.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Debug\PhysicalMemoryManager.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "Debug\PhysicalMemoryManager.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\Include /Zi /nologo /Wall /WX- /Od /Oy /D TargetMachine_IA32 /D _MBCS /X /Gm- /MD /Zp1 /GS- /fp:precise /Zc:wchar_t /Zc:forScope /GR- /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt PhyMemM.c
+         PhyMemM.c
+       Lib:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"D:\GRAD\EOS - (KB)\EOSKernel32\Debug\PhysicalMemoryManager.lib" /NOLOGO Debug\PhyMemM.obj
+         PhysicalMemoryManager.vcxproj -> D:\GRAD\EOS - (KB)\EOSKernel32\Debug\PhysicalMemoryManager.lib
+       FinalizeBuildStatus:
+         Deleting file "Debug\PhysicalMemoryManager.unsuccessfulbuild".
+         Touching "Debug\PhysicalMemoryManager.lastbuildstate".
+     1>Done Building Project "D:\GRAD\EOS - (KB)\EOSKernel32\PhysicalMemoryManager\PhysicalMemoryManager.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.65

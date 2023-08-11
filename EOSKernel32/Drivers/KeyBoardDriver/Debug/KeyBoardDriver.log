@@ -1,0 +1,28 @@
+﻿Build started 7/18/2011 10:10:43 AM.
+     1>Project "D:\GRAD\EOS - (KB)\EOSKernel32\Drivers\KeyBoardDriver\KeyBoardDriver.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Debug\KeyBoardDriver.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "Debug\KeyBoardDriver.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I../../Include/ /Zi /nologo /Wall /WX- /Od /Oy /D TargetMachine_IA32 /D _MBCS /X /Gm- /MD /Zp1 /GS- /fp:precise /Zc:wchar_t /Zc:forScope /GR- /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt KB.c
+         KB.c
+     1>KB.c(19): warning C4255: 'KB_ReadData' : no function prototype given: converting '()' to '(void)'
+     1>KB.c(27): warning C4255: 'DefaultKBHandler' : no function prototype given: converting '()' to '(void)'
+     1>KB.c(36): warning C4255: 'KB_ReadStatus' : no function prototype given: converting '()' to '(void)'
+     1>KB.c(65): warning C4255: 'KB_UpdateLEDs' : no function prototype given: converting '()' to '(void)'
+     1>KB.c(394): warning C4255: 'Keyboard_RestoreDefaultHandlers' : no function prototype given: converting '()' to '(void)'
+       Lib:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"D:\GRAD\EOS - (KB)\EOSKernel32\Debug\KeyBoardDriver.lib" /NOLOGO Debug\KB.obj
+         "D:\GRAD\EOS - (KB)\EOSKernel32\Debug\Common.lib"
+         "D:\GRAD\EOS - (KB)\EOSKernel32\Debug\IA32.lib"
+         "D:\GRAD\EOS - (KB)\EOSKernel32\Debug\PhysicalMemoryManager.lib"
+         KeyBoardDriver.vcxproj -> D:\GRAD\EOS - (KB)\EOSKernel32\Debug\KeyBoardDriver.lib
+       FinalizeBuildStatus:
+         Deleting file "Debug\KeyBoardDriver.unsuccessfulbuild".
+         Touching "Debug\KeyBoardDriver.lastbuildstate".
+     1>Done Building Project "D:\GRAD\EOS - (KB)\EOSKernel32\Drivers\KeyBoardDriver\KeyBoardDriver.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.71

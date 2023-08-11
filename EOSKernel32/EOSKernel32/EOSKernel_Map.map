@@ -1,0 +1,138 @@
+ EOSKernel32
+
+ Timestamp is 4e23ea85 (Mon Jul 18 10:10:45 2011)
+
+ Preferred load address is 00010000
+
+ Start         Length     Name                   Class
+ 0001:00000000 0000272aH .text                   CODE
+ 0002:00000000 0000030eH .data                   DATA
+ 0002:00000320 0000ec60H .bss                    DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___safe_se_handler_table   00000000     <absolute>
+ 0000:00000000       ___safe_se_handler_count   00000000     <absolute>
+ 0001:00000000       _Kernel_Entry              00010400 f   EOSKernel_OBJ.obj
+ 0001:00000030       _main                      00010430 f   EOSKernel_OBJ.obj
+ 0001:000000c0       _EOS_ClearBody             000104c0 f   IA32:TextDisplay.obj
+ 0001:00000140       _EOS_ClearScrean           00010540 f   IA32:TextDisplay.obj
+ 0001:00000190       _EOS_ClearHeader           00010590 f   IA32:TextDisplay.obj
+ 0001:000001e0       _EOS_ClearTrailer          000105e0 f   IA32:TextDisplay.obj
+ 0001:00000230       _EOS_PrintString           00010630 f   IA32:TextDisplay.obj
+ 0001:000003b0       _XPrintChar                000107b0 f   IA32:TextDisplay.obj
+ 0001:00000540       _PIC_Initialize            00010940 f   IA32:PIC.obj
+ 0001:000005d0       _DisableIRQ                000109d0 f   IA32:PIC.obj
+ 0001:00000640       _EnableIRQ                 00010a40 f   IA32:PIC.obj
+ 0001:000006c0       _EnableHWInt               00010ac0 f   IA32:PIC.obj
+ 0001:000006d0       _DisableHWInt              00010ad0 f   IA32:PIC.obj
+ 0001:000006e0       _PIC_SendCommand           00010ae0 f i IA32:PIC.obj
+ 0001:00000730       _PIC_WriteData             00010b30 f i IA32:PIC.obj
+ 0001:00000780       _PIC_ReadData              00010b80 f i IA32:PIC.obj
+ 0001:000007c0       _IDT_AddHandler            00010bc0 f   IA32:IDT.obj
+ 0001:00000850       _IDT_DefaultHandler        00010c50 f   IA32:IDT.obj
+ 0001:00000870       _ZeroException             00010c70 f   IA32:IDT.obj
+ 0001:00000890       _Debug                     00010c90 f   IA32:IDT.obj
+ 0001:000008b0       _NMI                       00010cb0 f   IA32:IDT.obj
+ 0001:000008d0       _BreakPoint                00010cd0 f   IA32:IDT.obj
+ 0001:000008f0       _OverFlow                  00010cf0 f   IA32:IDT.obj
+ 0001:00000910       _Bound                     00010d10 f   IA32:IDT.obj
+ 0001:00000930       _InvalidOpcode             00010d30 f   IA32:IDT.obj
+ 0001:00000950       _MathCo                    00010d50 f   IA32:IDT.obj
+ 0001:00000970       _DoubleFault               00010d70 f   IA32:IDT.obj
+ 0001:00000990       _CoprocessorOverrun        00010d90 f   IA32:IDT.obj
+ 0001:000009b0       _InvalidTSS                00010db0 f   IA32:IDT.obj
+ 0001:000009d0       _SegmentNotPresent         00010dd0 f   IA32:IDT.obj
+ 0001:000009f0       _StackSegmentFault         00010df0 f   IA32:IDT.obj
+ 0001:00000a10       _GeneralProtection         00010e10 f   IA32:IDT.obj
+ 0001:00000a30       _PageFault                 00010e30 f   IA32:IDT.obj
+ 0001:00000a50       _FloatError                00010e50 f   IA32:IDT.obj
+ 0001:00000a70       _Allignment                00010e70 f   IA32:IDT.obj
+ 0001:00000a90       _MachineCheck              00010e90 f   IA32:IDT.obj
+ 0001:00000ab0       _SIMD                      00010eb0 f   IA32:IDT.obj
+ 0001:00000ad0       _INT_Fn                    00010ed0 f   IA32:IDT.obj
+ 0001:00000af0       _IDT_Setup                 00010ef0 f   IA32:IDT.obj
+ 0001:00000d00       _GDT_Setup                 00011100 f   IA32:GDT.obj
+ 0001:00000e20       _OutPort                   00011220 f   IA32:MemoryMappedIO.obj
+ 0001:00000e30       _InPort                    00011230 f   IA32:MemoryMappedIO.obj
+ 0001:00000e50       _HDD_Test_IDEPrimaryChannel 00011250 f   HardDiskDriver:HDD.obj
+ 0001:00000e90       _HDD_Test_IDESecondaryChannel 00011290 f   HardDiskDriver:HDD.obj
+ 0001:00000ed0       _HDD_Test_IDEPrimDevices   000112d0 f   HardDiskDriver:HDD.obj
+ 0001:00000f90       _HDD_Test_IDESecDevices    00011390 f   HardDiskDriver:HDD.obj
+ 0001:00001050       _HDD_SelectDrive           00011450 f   HardDiskDriver:HDD.obj
+ 0001:00001160       _GetHDDSize                00011560 f   HardDiskDriver:HDD.obj
+ 0001:000012e0       _HDD_ReadSectors           000116e0 f   HardDiskDriver:HDD.obj
+ 0001:000014e0       _HDD_WriteSectors          000118e0 f   HardDiskDriver:HDD.obj
+ 0001:000016e0       _InitializeHDD             00011ae0 f   HardDiskDriver:HDD.obj
+ 0001:00001700       _DefaultKBHandler          00011b00 f   KeyBoardDriver:KB.obj
+ 0001:00001730       _KB_UpdateLEDs             00011b30 f   KeyBoardDriver:KB.obj
+ 0001:000017a0       _KBHandlerCaller           00011ba0 f   KeyBoardDriver:KB.obj
+ 0001:000017c0       _KB_InterruptHandler       00011bc0 f   KeyBoardDriver:KB.obj
+ 0001:00001a90       _KB_DisableKeyBoard        00011e90 f   KeyBoardDriver:KB.obj
+ 0001:00001ab0       _KB_EnableKeyBoard         00011eb0 f   KeyBoardDriver:KB.obj
+ 0001:00001ad0       _InitializeKeyboard        00011ed0 f   KeyBoardDriver:KB.obj
+ 0001:00001b50       _Keyboard_UpdateHandler    00011f50 f   KeyBoardDriver:KB.obj
+ 0001:00001b70       _Keyboard_RestoreDefaultHandlers 00011f70 f   KeyBoardDriver:KB.obj
+ 0001:00001b80       _KB_SendEncoderCommand     00011f80 f i KeyBoardDriver:KB.obj
+ 0001:00001bb0       _KB_ReadData               00011fb0 f i KeyBoardDriver:KB.obj
+ 0001:00001be0       _Get_Extended_KBVirtualCode 00011fe0 f i KeyBoardDriver:KB.obj
+ 0001:00001d00       _KB_SendControllerCommand  00012100 f i KeyBoardDriver:KB.obj
+ 0001:00001d30       _strcpy                    00012130 f   KeyBoardDriver:String.obj
+ 0001:00001d70       _strlen                    00012170 f   KeyBoardDriver:String.obj
+ 0001:00001da0       _memcpy                    000121a0 f   KeyBoardDriver:String.obj
+ 0001:00001df0       _memset                    000121f0 f   KeyBoardDriver:String.obj
+ 0001:00001e20       _strcmp                    00012220 f   KeyBoardDriver:String.obj
+ 0001:00001e80       _OutPortByte               00012280 f   KeyBoardDriver:MemMappedIO-IA32.obj
+ 0001:00001e90       _InPortByte                00012290 f   KeyBoardDriver:MemMappedIO-IA32.obj
+ 0001:00001eb0       _OutPortWord               000122b0 f   KeyBoardDriver:MemMappedIO-IA32.obj
+ 0001:00001ec0       _OutPortDWord              000122c0 f   KeyBoardDriver:MemMappedIO-IA32.obj
+ 0001:00001ed0       _InPortWord                000122d0 f   KeyBoardDriver:MemMappedIO-IA32.obj
+ 0001:00001ef0       _InPortDWord               000122f0 f   KeyBoardDriver:MemMappedIO-IA32.obj
+ 0001:00001f10       _FS_MemoryMap_GetFirstFreeFragment 00012310 f   FileSystem:FileSystem.obj
+ 0001:00001fa0       _FS_MemoryMap_GetFirstFreePattern 000123a0 f   FileSystem:FileSystem.obj
+ 0001:000020b0       _FS_GetFreeMemorySize_KiBytes 000124b0 f   FileSystem:FileSystem.obj
+ 0001:000020d0       _FS_GetMemorySize_KiBytes  000124d0 f   FileSystem:FileSystem.obj
+ 0001:000020e0       _FS_GetMemorySize_Fragments 000124e0 f   FileSystem:FileSystem.obj
+ 0001:000020f0       _FS_GetUsedMemorySize_Fragments 000124f0 f   FileSystem:FileSystem.obj
+ 0001:00002100       _FS_GetFreeMemorySize_Fragments 00012500 f   FileSystem:FileSystem.obj
+ 0001:00002110       _FS_GetUsedMemorySize_KiBytes 00012510 f   FileSystem:FileSystem.obj
+ 0001:00002120       _FS_Setup                  00012520 f   FileSystem:FileSystem.obj
+ 0001:00002170       _FS_AllocateMemory_Fragment 00012570 f   FileSystem:FileSystem.obj
+ 0001:000021b0       _FS_DeallocateMemory_Fragment 000125b0 f   FileSystem:FileSystem.obj
+ 0001:000021f0       _FS_AllocateMemory_Pattern 000125f0 f   FileSystem:FileSystem.obj
+ 0001:00002270       _FS_DeallocateMemory_Pattern 00012670 f   FileSystem:FileSystem.obj
+ 0001:000022d0       _ReadMemFragment           000126d0 f   FileSystem:FileSystem.obj
+ 0001:00002300       _WriteFragment             00012700 f   FileSystem:FileSystem.obj
+ 0001:00002330       _AddFileToRootDir          00012730 f   FileSystem:FileSystem.obj
+ 0001:00002440       _FindFile                  00012840 f   FileSystem:FileSystem.obj
+ 0001:000024b0       _LoadFile                  000128b0 f   FileSystem:FileSystem.obj
+ 0001:00002550       _WriteFile                 00012950 f   FileSystem:FileSystem.obj
+ 0001:000025c0       _TryFS                     000129c0 f   FileSystem:FileSystem.obj
+ 0001:00002650       _FS_MemoryMap_TestFragmentBit 00012a50 f i FileSystem:FileSystem.obj
+ 0001:00002690       _FS_MemoryMap_SetFragmentBit 00012a90 f i FileSystem:FileSystem.obj
+ 0001:000026e0       _FS_MemoryMap_ClrFragmentBit 00012ae0 f i FileSystem:FileSystem.obj
+ 0002:00000034       _VGA_Ram                   00012c34     IA32:TextDisplay.obj
+ 0002:00000038       _X                         00012c38     IA32:TextDisplay.obj
+ 0002:00000039       _Y                         00012c39     IA32:TextDisplay.obj
+ 0002:0000003a       _Color                     00012c3a     IA32:TextDisplay.obj
+ 0002:00000298       _Ascii                     00012e98     KeyBoardDriver:KB.obj
+ 0002:00000b48       _ConnectedHDD              00013748     HardDiskDriver:HDD.obj
+ 0002:00000b58       _Keyboard_Status           00013758     KeyBoardDriver:KB.obj
+ 0002:0000eb78       _MaxLBA                    00021778     <common>
+ 0002:0000eb80       _DefaultKeysHandlers       00021780     <common>
+ 0002:0000ed80       _CustomKeysHandlers        00021980     <common>
+ 0002:0000ef7c       _KB_Keys_Handlers          00021b7c     <common>
+
+ entry point at        0001:00000000
+
+ Static symbols
+
+ 0001:00000110       _SetCoordinate             00010510 f   IA32:TextDisplay.obj
+ 0001:000002a0       _PrintChar                 000106a0 f   IA32:TextDisplay.obj
+ 0001:00000330       _IncX                      00010730 f   IA32:TextDisplay.obj
+ 0001:00000360       _IncY                      00010760 f   IA32:TextDisplay.obj
+ 0001:000004c0       _CIncY                     000108c0 f   IA32:TextDisplay.obj
+ 0001:00000510       _CIncX                     00010910 f   IA32:TextDisplay.obj
+ 0001:00000cf0       _IDT_IdtrSetup             000110f0 f   IA32:IDT.obj
+ 0001:00000d60       _GDT_GdtrSetup             00011160 f   IA32:GDT.obj
+ 0001:00000d70       _GDT_AddDescriptor         00011170 f   IA32:GDT.obj

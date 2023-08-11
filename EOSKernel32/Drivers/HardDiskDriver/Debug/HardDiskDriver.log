@@ -1,0 +1,20 @@
+﻿Build started 7/18/2011 10:10:41 AM.
+     1>Project "D:\GRAD\EOS - (KB)\EOSKernel32\Drivers\HardDiskDriver\HardDiskDriver.vcxproj" on node 3 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Debug\HardDiskDriver.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "Debug\HardDiskDriver.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I../../Include/ /Zi /nologo /Wall /WX- /Od /Oy /D TargetMachine_IA32 /D _MBCS /X /Gm- /MD /Zp1 /GS- /fp:precise /Zc:wchar_t /Zc:forScope /GR- /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt HDD.c
+         HDD.c
+       Lib:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"D:\GRAD\EOS - (KB)\EOSKernel32\Debug\HardDiskDriver.lib" /NOLOGO Debug\HDD.obj
+         HardDiskDriver.vcxproj -> D:\GRAD\EOS - (KB)\EOSKernel32\Debug\HardDiskDriver.lib
+       FinalizeBuildStatus:
+         Deleting file "Debug\HardDiskDriver.unsuccessfulbuild".
+         Touching "Debug\HardDiskDriver.lastbuildstate".
+     1>Done Building Project "D:\GRAD\EOS - (KB)\EOSKernel32\Drivers\HardDiskDriver\HardDiskDriver.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.02

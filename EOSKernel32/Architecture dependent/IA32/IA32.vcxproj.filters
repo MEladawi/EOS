@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="C files">
+      <UniqueIdentifier>{5f637627-6ddb-493a-8bd5-c74e8c0c3791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private H files">
+      <UniqueIdentifier>{cc4e58c6-d90a-41c9-bcf5-8f1d2f3fbed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public H files">
+      <UniqueIdentifier>{9df0f401-5b49-43a8-a9e3-b59460e871a5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GDT.c">
+      <Filter>C files</Filter>
+    </ClCompile>
+    <ClCompile Include="IDT.c">
+      <Filter>C files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextDisplay.c">
+      <Filter>C files</Filter>
+    </ClCompile>
+    <ClCompile Include="PIC.c">
+      <Filter>C files</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryMappedIO.c">
+      <Filter>C files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GDT.h">
+      <Filter>Private H files</Filter>
+    </ClInclude>
+    <ClInclude Include="IDT.h">
+      <Filter>Private H files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\TextDisplay.h">
+      <Filter>Private H files</Filter>
+    </ClInclude>
+    <ClInclude Include="PIC.h">
+      <Filter>Private H files</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryMappedIO.h">
+      <Filter>Private H files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\Platform_Dependent.h">
+      <Filter>Public H files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

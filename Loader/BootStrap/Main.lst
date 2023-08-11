@@ -1,0 +1,397 @@
+Microsoft (R) Macro Assembler Version 6.14.8444		    04/05/11 21:19:41
+D:\EOS\Loader\BootStrap\Main.asm			     Page 1 - 1
+
+
+				;							          _____                   _______                   _____          
+				;							         /\    \                 /::\    \                 /\    \         
+				;							        /::\    \               /::::\    \               /::\    \        
+				;							       /::::\    \             /::::::\    \             /::::\    \       
+				;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+				;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+				;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+				;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+				;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+				;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+				;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+				;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+				;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+				;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+				;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+				;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+				;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+				;							      \:::\    \                \::::/    /             \::::::/    /      
+				;							       \:::\____\                \::/____/               \::::/    /       
+				;							        \::/    /                 ~~                      \::/    /        
+				;							         \/____/  '11 Grad project                         \/____/         
+				;							                                                                           
+
+
+
+				;This module serves as bootstrap which is at bootsector!
+				;It's main function is to load a operating system initializer which in turn initializes the system and load our 32bit kernel :D
+
+
+
+				.model tiny
+				.686P
+
+
+ 0000				.Data;-----------------------------------------------------------------------------------------
+ 0000 4C 6F 61 64 69 6E		LdMsg             Byte     "Loading EOS operating system initializer", 0
+       67 20 45 4F 53 20
+       6F 70 65 72 61 74
+       69 6E 67 20 73 79
+       73 74 65 6D 20 69
+       6E 69 74 69 61 6C
+       69 7A 65 72 00
+ 0029 20 5B 44 6F 6E 65		DoneMsg         Byte     " [Done]",0Dh, 0Ah, 0
+       5D 0D 0A 00
+ 0033 0D 0A 00			NewLineMsg    Byte      0Dh, 0Ah, 0
+ 0036 6F 6F 70 73 21 20		FailMsg           Byte      "oops! fatal error occured in loading operating system initializer",0Dh, 0Ah, 0
+       66 61 74 61 6C 20
+       65 72 72 6F 72 20
+       6F 63 63 75 72 65
+       64 20 69 6E 20 6C
+       6F 61 64 69 6E 67
+       20 6F 70 65 72 61
+       74 69 6E 67 20 73
+       79 73 74 65 6D 20
+       69 6E 69 74 69 61
+       6C 69 7A 65 72 0D
+       0A 00
+ 007A 70 72 65 73 73 20		RebootMsg     Byte       "press any key to reboot", 0Dh, 0Ah, 0
+       61 6E 79 20 6B 65
+       79 20 74 6F 20 72
+       65 62 6F 6F 74 0D
+       0A 00
+ 0094 2E 2E 2E 00		WaitMsg          Byte      "...",0
+
+				;--------------------------------------------------------------------------------------------------------
+
+
+ 0000				.code
+				ORG 0h
+
+ 0000				Go proc  ;Just jump function to bypass the inluded functions (Remember we use Tiny model !!)
+ 0000  E9 0094				jmp main
+ 0003				Go endp
+
+				;Include Area-------------------------------------------------------------------------
+				include ..\LIB\Print16.inc
+			      C ;							          _____                   _______                   _____          
+			      C ;							         /\    \                 /::\    \                 /\    \         
+			      C ;							        /::\    \               /::::\    \               /::\    \        
+			      C ;							       /::::\    \             /::::::\    \             /::::\    \       
+			      C ;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+			      C ;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+			      C ;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+			      C ;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+			      C ;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+			      C ;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+			      C ;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+			      C ;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+			      C ;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+			      C ;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+			      C ;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+			      C ;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+			      C ;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+			      C ;							      \:::\    \                \::::/    /             \::::::/    /      
+			      C ;							       \:::\____\                \::/____/               \::::/    /       
+			      C ;							        \::/    /                 ~~                      \::/    /        
+			      C ;							         \/____/  '11 Grad project                         \/____/         
+			      C ;							                                                                           
+			      C 
+			      C 
+			      C 
+			      C 
+ 0003			      C print PROC 
+ 0003  60		      C pusha
+ 0004			      C start:
+ 0004  AC		      C 	lodsb
+ 0005  0A C0		      C 	or al,al
+ 0007  74 06		      C 	jz done
+ 0009  B4 0E		      C 	mov ah, 0eh
+ 000B  CD 10		      C 	int 10h
+ 000D  EB F5		      C jmp start
+			      C 
+ 000F			      C done: 
+ 000F  61		      C popa
+ 0010  C3		      C ret
+ 0011			      C print ENDP
+			      C 
+			      C 
+				include ..\LIB\Load16.inc
+			      C ;							          _____                   _______                   _____          
+			      C ;							         /\    \                 /::\    \                 /\    \         
+			      C ;							        /::\    \               /::::\    \               /::\    \        
+			      C ;							       /::::\    \             /::::::\    \             /::::\    \       
+			      C ;							      /::::::\    \           /::::::::\    \           /::::::\    \      
+			      C ;							     /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+			      C ;							    /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+			      C ;							   /::::\   \:::\    \     /:::/    / \:::\    \      \:::\   \:::\    \   
+			      C ;							  /::::::\   \:::\    \   /:::/____/   \:::\____\   ___\:::\   \:::\    \  
+			      C ;							 /:::/\:::\   \:::\    \ |:::|    |     |:::|    | /\   \:::\   \:::\    \ 
+			      C ;							/:::/__\:::\   \:::\____\|:::|____|     |:::|    |/::\   \:::\   \:::\____\
+			      C ;							\:::\   \:::\   \::/    / \:::\    \   /:::/    / \:::\   \:::\   \::/    /
+			      C ;							 \:::\   \:::\   \/____/   \:::\    \ /:::/    /   \:::\   \:::\   \/____/ 
+			      C ;							  \:::\   \:::\    \        \:::\    /:::/    /     \:::\   \:::\    \     
+			      C ;							   \:::\   \:::\____\        \:::\__/:::/    /       \:::\   \:::\____\    
+			      C ;							    \:::\   \::/    /         \::::::::/    /         \:::\  /:::/    /    
+			      C ;							     \:::\   \/____/           \::::::/    /           \:::\/:::/    /     
+			      C ;							      \:::\    \                \::::/    /             \::::::/    /      
+			      C ;							       \:::\____\                \::/____/               \::::/    /       
+			      C ;							        \::/    /                 ~~                      \::/    /        
+			      C ;							         \/____/  '11 Grad project                         \/____/         
+			      C ;							                                                                           
+			      C 
+			      C ;Variables
+ 0011 00		      C Sector    Byte     ?
+ 0012 00		      C Head      Byte     ?
+ 0013 00		      C Cylinder  Byte     ?
+			      C 
+			      C 
+			      C 
+			      C 
+ 0014			      C InitializeDrive PROC 
+ 0014  60		      C pusha
+ 0015			      C Begin:
+ 0015  33 DB		      C 	xor bx, bx
+ 0017  32 D2		      C 	xor dl, dl
+ 0019  32 E4		      C 	xor ah, ah
+ 001B  CD 13		      C 	int 13h
+ 001D  72 F6		      C jc Begin
+ 001F  61		      C popa
+ 0020  C3		      C 	RET
+ 0021			      C InitializeDrive ENDP
+			      C 
+			      C 
+			      C 
+ 0021			      C CnvrtAd PROC
+ 0021  60		      C pusha
+			      C 
+			      C ;This covert LBA address to CHS address.
+			      C ;Input: LBA value given in AX register.
+			      C ;o/p are : cylinder, head and Sector variables : in main module.	   
+			      C 	
+			      C 
+			      C 	;Symbolic constants !
+ = 0012			      C 	SectorPerTrack = 18
+ = 0002			      C 	NoHeads = 2
+ = 0200			      C 	BytesPerSector = 512
+			      C 	
+			      C 	;Sector = (LBA mod SectorsPerTrack)+1
+			      C 	;Cylinder = (LBA/SectorsPerTrack)/NumHeads
+			      C 	;Head = (LBA/SectorsPerTrack) mod NumHeads
+			      C 	
+			      C 	
+			      C 	;**LBA/Sectors Per Track:
+			      C 	;Quotient(Ax) : NumberOfTrack    Remainder(Dx) + 1 : Sector
+ 0022  33 D2		      C 	xor dx, dx
+ 0024  33 DB		      C 	xor bx,bx
+ 0026  BB 0012		      C 	mov Bx, SectorPerTrack
+ 0029  F7 F3		      C 	Div Bx
+ 002B  FE C2		      C 	inc dl
+ 002D  88 16 0011 R	      C 	mov Sector, dl
+			      C 	
+			      C 	
+			      C 	;**Number Of Tracks(Ax)/Number Of Heads:
+			      C 	;Quotient(Al) : Cylinder  ,   Remainder(Ah) : Head
+ 0031  33 D2		      C 	XOR Dx, Dx
+ 0033  BB 0002		      C 	mov Bx, NoHeads
+ 0036  F7 F3		      C 	Div Bx
+ 0038  A2 0013 R	      C 	mov Cylinder, al
+ 003B  88 16 0012 R	      C 	mov Head, dl
+			      C 	
+			      C 	
+ 003F  61		      C popa
+ 0040  C3		      C 	RET
+ 0041			      C CnvrtAd ENDP
+			      C 
+			      C 
+			      C 
+ 0041			      C Load PROC
+			      C 
+			      C ;receives Ax as start sector, Cx as no of sectors and Bx as address of loaded data
+			      C 
+ 0041  E8 FFD0		      C 	CALL InitializeDrive
+			      C 
+ 0044			      C LoadBegin:
+			      C 	
+ 0044  BF 000A		      C 	mov di, 0Ah  ;Dx is loop to try to load a sector 10 times.
+			      C 	
+			      C 	; for wait dots :D
+ 0047  BE 0094 R	      C 	mov si, offset WaitMsg
+ 004A  E8 FFB6		      C 	call print
+			      C 		
+ 004D			      C 	SectorTrial:
+ 004D  50		      C 		push ax
+ 004E  52		      C 		push dx
+ 004F  51		      C 		push cx
+			      C 				
+			      C 		;Convert address
+ 0050  E8 FFCE		      C 		call CnvrtAd
+			      C 
+			      C 		; Interrupt 13h to read sector
+ 0053  B4 02		      C 		mov ah, 2
+ 0055  B0 01		      C 		mov al, 1
+ 0057  8A 2E 0013 R	      C 		mov ch, cylinder
+ 005B  8A 0E 0011 R	      C 		mov cl, sector
+ 005F  8A 36 0012 R	      C 		mov dh, head
+ 0063  B2 00		      C 		mov dl, 0
+ 0065  CD 13		      C 		int 13h
+			      C 		
+ 0067  73 08		      C 		jnc  NextSec ;if carry there is error so we retry, else load next sector
+			      C 		
+ 0069  4F		      C 		dec Di  ;Decrement loop of error trials
+ 006A  74 18		      C 		jz failure ;Di=0
+			      C 		
+ 006C  59		      C 		pop cx 
+ 006D  5A		      C 		pop dx
+ 006E  58		      C 		pop ax
+			      C 			
+ 006F  EB DC		      C 	jmp SectorTrial
+			      C 	
+ 0071			      C NextSec:
+ 0071  59		      C 	pop cx
+ 0072  5A		      C 	pop dx
+ 0073  58		      C 	pop ax
+ 0074  81 C3 0200	      C 	add bx, BytesPerSector   ;next memory location for next sector
+ 0078  40		      C 	inc Ax	   ;Next sector LBA
+ 0079  49		      C 	dec Cx ;Decrease counter of no of sectors
+ 007A  75 C8		      C jnz LoadBegin
+			      C 
+			      C 
+			      C 
+ 007C  BE 0029 R	      C 	mov si, offset DoneMsg
+ 007F  E8 FF81		      C 	call print
+			      C 	
+ 0082  EB 12		      C 	jmp finish
+			      C 	
+			      C 
+			      C 	
+ 0084			      C Failure:
+ 0084  BE 0036 R	      C           mov si, offset FailMsg
+ 0087  E8 FF79		      C           call    Print
+ 008A  BE 007A R	      C           mov si, offset RebootMsg
+ 008D  E8 FF73		      C           call print
+			      C           
+			      C           ;Reboot   :(   after user press key
+ 0090  B4 00		      C           mov ah, 0
+ 0092  CD 16		      C           int  16h    ; wait key press
+ 0094  CD 19		      C           int  19h    ; Reboot computer	
+			      C 	
+			      C 
+ 0096			      C finish:
+ 0096  C3		      C 	RET
+			      C 	
+ 0097			      C Load ENDP
+			      C 
+			      C 
+			      C 
+			      C 
+				;--------------------------------------------------------------------------------------------
+
+ 0097				main PROC
+
+					;prepare the DS segment register to 7c00h ->start at 7c0:0=7c00 and es to 0h
+ 0097  FA				cli
+ 0098  FC				cld
+ 0099  B8 07C0				mov ax, 7c0h
+ 009C  8E D8				mov ds, ax
+ 009E  33 C0				xor ax,ax
+ 00A0  8E C0				mov es, ax
+					
+					;Setting up the real time kernel stack: revice the memory map  this is the free space between bda and bootloader .. (Marsoma 3andy) - about 30KB
+ 00A2  B8 0500				mov ax, 500h
+ 00A5  8E D0				mov ss, ax
+ 00A7  BC 7BFF				mov sp, 7BFFh
+ 00AA  FB				sti
+					
+					;printing text using interrupt
+ 00AB  BE 0000 R			mov si, offset LdMsg	
+ 00AE  E8 FF52				call print
+					
+					;Loading system initializer
+ 00B1  B8 0001				mov ax, 1h
+ 00B4  B9 0002				mov Cx, 2h
+ 00B7  BB 7E00				mov bx, 7e00h
+ 00BA  E8 FF84				call Load
+
+ 00BD  6A 00				push 0h		;Cs
+ 00BF  68 7E00				push 7e00h		;IP address=10x0+7f00h=7f00h :D
+ 00C2  CB				retf
+					
+					;reboot
+ 00C3  BE 007A R			mov si, offset rebootmsg
+ 00C6  E8 FF3A				call print
+ 00C9  B4 00				mov ah, 0
+ 00CB  CD 16			          int  16h    	; wait key press
+ 00CD  CD 19			          int  19h    	; Reboot computer	
+
+ 00CF				main ENDP
+
+				END
+
+Microsoft (R) Macro Assembler Version 6.14.8444		    04/05/11 21:19:41
+D:\EOS\Loader\BootStrap\Main.asm			     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_TEXT  . . . . . . . . . . . . .	16 Bit	 00CF	  Word	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	16 Bit	 0098	  Word	  Public  'DATA'	
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+CnvrtAd  . . . . . . . . . . . .	P Near	 0021	  _TEXT	Length= 0020 Public
+Go . . . . . . . . . . . . . . .	P Near	 0000	  _TEXT	Length= 0003 Public
+InitializeDrive  . . . . . . . .	P Near	 0014	  _TEXT	Length= 000D Public
+  Begin  . . . . . . . . . . . .	L Near	 0015	  _TEXT	
+Load . . . . . . . . . . . . . .	P Near	 0041	  _TEXT	Length= 0056 Public
+  LoadBegin  . . . . . . . . . .	L Near	 0044	  _TEXT	
+  SectorTrial  . . . . . . . . .	L Near	 004D	  _TEXT	
+  NextSec  . . . . . . . . . . .	L Near	 0071	  _TEXT	
+  Failure  . . . . . . . . . . .	L Near	 0084	  _TEXT	
+  finish . . . . . . . . . . . .	L Near	 0096	  _TEXT	
+main . . . . . . . . . . . . . .	P Near	 0097	  _TEXT	Length= 0038 Public
+print  . . . . . . . . . . . . .	P Near	 0003	  _TEXT	Length= 000E Public
+  start  . . . . . . . . . . . .	L Near	 0004	  _TEXT	
+  done . . . . . . . . . . . . .	L Near	 000F	  _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0001h	 
+@code  . . . . . . . . . . . . .	Text   	 DGROUP
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+BytesPerSector . . . . . . . . .	Number	 0200h	 
+Cylinder . . . . . . . . . . . .	Byte	 0013	  _TEXT	
+DoneMsg  . . . . . . . . . . . .	Byte	 0029	  _DATA	
+FailMsg  . . . . . . . . . . . .	Byte	 0036	  _DATA	
+Head . . . . . . . . . . . . . .	Byte	 0012	  _TEXT	
+LdMsg  . . . . . . . . . . . . .	Byte	 0000	  _DATA	
+NewLineMsg . . . . . . . . . . .	Byte	 0033	  _DATA	
+NoHeads  . . . . . . . . . . . .	Number	 0002h	 
+RebootMsg  . . . . . . . . . . .	Byte	 007A	  _DATA	
+SectorPerTrack . . . . . . . . .	Number	 0012h	 
+Sector . . . . . . . . . . . . .	Byte	 0011	  _TEXT	
+WaitMsg  . . . . . . . . . . . .	Byte	 0094	  _DATA	
+
+	   0 Warnings
+	   0 Errors

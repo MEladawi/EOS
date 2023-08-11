@@ -1,0 +1,14 @@
+	mov ax, 10h ;offset of data segment is 
+	mov ds, ax
+	mov es, ax
+	mov ss, ax
+	mov ds, ax
+	
+	
+	mov ecx, (kernelsize * 512 /4)
+	mov esi, RMode_KernelBase
+	mov edi, PMode_KernelBase
+	Rep movsd
+	
+	
+	hlt

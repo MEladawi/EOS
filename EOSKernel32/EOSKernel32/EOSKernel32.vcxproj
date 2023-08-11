@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4D1B01BD-DFCA-4242-A13D-A7C7C79FED09}</ProjectGuid>
+    <RootNamespace>EOSKernel32</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>
+    </CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <IncludePath>
+    </IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OmitFramePointers>true</OmitFramePointers>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <AssemblerOutput>All</AssemblerOutput>
+      <ObjectFileName>EOSKernel_OBJ.obj</ObjectFileName>
+      <ProgramDataBaseFileName>EOSKernel_DB.PDB</ProgramDataBaseFileName>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <CallingConvention>Cdecl</CallingConvention>
+      <CompileAs>CompileAsC</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AssemblerListingLocation>./EOSKernel_List.lst</AssemblerListingLocation>
+      <PreprocessorDefinitions>TargetMachine_IA32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ErrorReporting>Queue</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>
+      </GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\Library\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>EOSKernel_Map.map</MapFileName>
+      <SubSystem>Native</SubSystem>
+      <Driver>Driver</Driver>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>Kernel_Entry</EntryPointSymbol>
+      <BaseAddress>0x10000</BaseAddress>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <RandomizedBaseAddress>
+      </RandomizedBaseAddress>
+      <AdditionalOptions> /ALIGN:512 %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Architecture dependent\IA32\IA32.vcxproj">
+      <Project>{2a859484-47f3-4804-9dcf-70c4f6ea7ee9}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\Drivers\HardDiskDriver\HardDiskDriver.vcxproj">
+      <Project>{c59cde1d-ce97-4b8e-835d-dbb9fc7696fb}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\Drivers\KeyBoardDriver\KeyBoardDriver.vcxproj">
+      <Project>{53a5c061-1662-4580-a22f-1fc343db9c92}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\FileSystem\FileSystem.vcxproj">
+      <Project>{8b5dabe2-a438-4bfd-9a75-33a4723f4a0f}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\Library.vcxproj">
+      <Project>{5e89d2b5-de8f-472b-9211-d80858227bec}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\PhysicalMemoryManager\PhysicalMemoryManager.vcxproj">
+      <Project>{460f39ac-2af7-4cb3-a1fe-860f88dd8feb}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
