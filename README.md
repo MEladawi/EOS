@@ -1,6 +1,14 @@
 # EOS
-EOS is a baby operating system I development back in 2011, during my last year of computer engineering undergrad study. It supports arabic commands, and it has built-in calculator and word editor!
+EOS is a baby operating system I development back in 2011, during my last year of computer engineering undergrad study, which was renamed in later to Lotus.
 
-It was a lot of hard work, and of course fun! 
+It supports arabic commands, and it has built-in calculator and word editor!
 
-I will add a tutorial on how to build and run it when I come up for air!
+It was a lot of hard work, and of course fun, going through every detail and read the chips' manuals (including Intel's IA32 microprocessor).
+
+I will add a tutorial on how to build and run it when I get a chance (haven't done that since 2011)!
+
+These are the only screenshots I have from back then (sorry for the "beter" :D).
+
+![Logo](/Assets/LOTUS_1.png)
+
+![Logo](/Assets/LOTUS_2.png)
