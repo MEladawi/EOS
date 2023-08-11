@@ -1,5 +1,5 @@
 # EOS
-EOS is a baby operating system I development back in 2011, during my last year of computer engineering undergrad study, which was renamed in later to Lotus.
+EOS is a baby operating system I development back in 2011, during my last year of computer engineering undergrad study, which was renamed later to Lotus.
 
 It supports arabic commands, and it has built-in calculator and word editor!
 
