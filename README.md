@@ -3,7 +3,7 @@ EOS is a baby operating system I development back in 2011, during my last year o
 
 It supports arabic commands, and it has built-in calculator and word editor!
 
-It was a lot of hard work, and of course fun, going through every detail and read the chips' manuals (including Intel's IA32 microprocessor). I still rememebr how happy I was when I changed I had the mode changed to32-bit for the first time, and when I had the keyboard working :)
+It was a lot of hard work, and of course fun, going through every detail and read the chips' manuals (including Intel's IA32 microprocessor). I still rememebr how happy I was when I changed the mode to 32-bit for the first time, and when I had the keyboard working :)
 
 I will add a tutorial on how to build and run it when I get a chance (haven't done that since 2011)!
 
